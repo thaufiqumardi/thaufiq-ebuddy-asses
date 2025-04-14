@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
 
 // const SECRET_KEY = 'supersecret'; // use from .env file in production
 
-declare global {
-  namespace Express {
-    interface Request {
-      user?: string | JwtPayload;
-    }
-  }
-}
+// declare global {
+//   namespace Express {
+//     interface Request {
+//       user?: string | JwtPayload;
+//     }
+//   }
+// }
 
 export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
@@ -17,13 +17,14 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
     res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const token = authHeader?.split(" ")[1];
+  const token = authHeader?.split(" ")[1]; // To split the token from the "Bearer" prefix
   if (!token) {
     res.status(401).json({ error: 'Unauthorized' });
     return
   }
   try {
-    // Ideally we should decode the token and set req.user to the decoded value
+    // Ideally we should decode the token and set req.user (i can do this after `declare global` to extend Express Request)
+    // to the decoded value
     // This is just a placeholder, need to replace with actual decoding logic
     
     // const decoded = jwt.verify(token as string, SECRET_KEY);
