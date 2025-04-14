@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { db } from '@/config/firebaseConfig';
 import { getAllUsers } from '@/repository/userCollection';
+import { CreateUserDTO } from '@shared/types/user';
 
 export const handleFetchUser = async (req: Request, res: Response) => {
   const users = await getAllUsers();
@@ -12,7 +13,7 @@ export const handleFetchUser = async (req: Request, res: Response) => {
 };
 
 export const handleUpdateUser = async (req: Request, res: Response) => {
-  const {id, name, email } = req.body;
+  const { id, name, email } = req.body;
   
   const now = Date.now();
 
@@ -31,7 +32,12 @@ export const handleUpdateUser = async (req: Request, res: Response) => {
     }
     return;
   }
+  res.status(400).json({ message: 'Please provide user id' });
+};
 
+export const handleCreateUser = async (req: Request, res: Response) => {
+  const { name, email } = req.body as CreateUserDTO;
+  const now = Date.now();
   if (!name || !email) {
     res.status(400).json({ message: 'Please provide name and email' });
     return;
@@ -44,4 +50,4 @@ export const handleUpdateUser = async (req: Request, res: Response) => {
   });
 
   res.status(201).json({ id: docRef.id, message: 'User created' });
-};
+}

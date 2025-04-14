@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { handleFetchUser, handleUpdateUser } from '@/controller/user';
+import { handleCreateUser, handleFetchUser, handleUpdateUser } from '@/controller/user';
 import { authenticate } from '@/middleware/authMiddleware';
 
 const router = Router();
@@ -10,9 +10,8 @@ router.get('/', (req, res) => {
 
 router.get('/fetch-user-data', authenticate, handleFetchUser);
 
-router.route('/update-user-data')
-  .post(authenticate, handleUpdateUser)
-  .put(authenticate, handleUpdateUser);
+router.post('/update-user-data', authenticate, handleCreateUser);
+router.put('/update-user-data', authenticate, handleUpdateUser);
 
 
 export default router;

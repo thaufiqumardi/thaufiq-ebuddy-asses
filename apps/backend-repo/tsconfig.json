@@ -8,6 +8,7 @@
     "paths": {
       "@/*": ["./src/*"],                               /* Path mapping for app module. */
       "@app/*": ["./*"],                                /* Path mapping for app module. */
+      "@shared/*": ["../../shared/*"],                   /* Path mapping for shared module. */
     }
   },
   "include": [
