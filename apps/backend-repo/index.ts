@@ -1,10 +1,7 @@
-import { app } from './core/app';
-import express from 'express';
-import useRoutes from './routes/useRoutes';
+import { app } from '@/core/app';
+import useRoutes from '@/routes/useRoutes';
 
 const PORT = process.env.PORT || 4000;
-
-app.use(express.json());
 
 app.use("/", useRoutes)
 
