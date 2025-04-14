@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { db } from '../config/firebaseConfig';
+import { db } from '@/config/firebaseConfig';
 
 export const getUsers = async (req: Request, res: Response) => {
     try {
