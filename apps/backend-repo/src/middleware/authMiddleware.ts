@@ -1,12 +1,41 @@
 import { Request, Response, NextFunction } from 'express';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+
+// const SECRET_KEY = 'supersecret'; // use from .env file in production
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: string | JwtPayload;
+    }
+  }
+}
 
 export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
-  const authorized = true;
-  if (!authorized) {
-    res.status(401).json({ message: 'Unauthorized' });
-    return;
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    res.status(401).json({ error: 'Unauthorized' });
   }
 
-  next();
+  const token = authHeader?.split(" ")[1];
+  if (!token) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return
+  }
+  try {
+    // Ideally we should decode the token and set req.user to the decoded value
+    // This is just a placeholder, need to replace with actual decoding logic
+    
+    // const decoded = jwt.verify(token as string, SECRET_KEY);
+    // req.user = decoded;
+    if (token === 'my-secret-token') {
+      next(); // Proceed to the next middleware or route handler
+    } else {
+      throw new Error('Invalid token');
+    }
+   
+  } catch {
+    res.status(403).json({ error: 'Invalid token' });
+  }
 };
 
