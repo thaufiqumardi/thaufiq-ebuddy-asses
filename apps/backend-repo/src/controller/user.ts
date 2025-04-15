@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { db } from '@/config/firebaseConfig';
 import { createUser, getAllUsers, updateUser } from '@/repository/userCollection';
 import { CreateUserDTO } from '@shared/types/user';
 
