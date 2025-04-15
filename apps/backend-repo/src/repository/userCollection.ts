@@ -1,9 +1,40 @@
 import { db } from '@/config/firebaseConfig';
 import { CreateUserDTO } from '@shared/types/user';
 
-export const getAllUsers = async () => {
-  const snapshot = await db.collection('users').get();
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+export const getAllUsers = async (
+  limit: number,
+  cursor?: number,
+  direction: 'next' | 'prev' = 'next'
+) => {
+  let query = db.collection('users').orderBy('createdAt', 'desc').limit(limit);
+
+  if (cursor) {
+    if (direction === 'next') {
+      query = query.startAfter(cursor);
+    } else if (direction === 'prev') {
+      query = query.endBefore(cursor);
+    }
+  }
+
+  const snapshot = await query.get();
+  const users = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+
+  const totalSnap = await db.collection('users').count().get();
+  const total = totalSnap.data().count;
+
+  const nextCursor = snapshot.docs[snapshot.docs.length - 1]?.get('createdAt');
+  const prevCursor = snapshot.docs[0]?.get('createdAt');
+
+  return {
+    users,
+    pageSize: users.length,
+    total,
+    nextCursor,
+    prevCursor
+  };
 };
 
 export const createUser = async (userData: CreateUserDTO) => {

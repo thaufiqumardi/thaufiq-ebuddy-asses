@@ -3,12 +3,18 @@ import { createUser, getAllUsers, updateUser } from '@/repository/userCollection
 import { CreateUserDTO } from '@shared/types/user';
 
 export const handleFetchUser = async (req: Request, res: Response) => {
-  const users = await getAllUsers();
-  if (users.length === 0) {
-    res.status(404).json({ message: 'No users found' });
-    return;
+  try {
+    const limit = parseInt(req.query.limit as string) || 10;
+    const cursor = req.query.cursor ? Number(req.query.cursor) : undefined;
+    const direction = req.query.direction === 'prev' ? 'prev' : 'next';
+
+    const result = await getAllUsers(limit, cursor, direction);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Fetch users failed:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
-  res.status(200).json(users);
 };
 
 export const handleUpdateUser = async (req: Request, res: Response) => {
