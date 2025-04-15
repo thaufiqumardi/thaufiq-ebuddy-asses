@@ -1,41 +1,52 @@
 import { db } from '@/config/firebaseConfig';
 import { CreateUserDTO } from '@shared/types/user';
 
-export const getAllUsers = async (
-  limit: number,
-  cursor?: number,
-  direction: 'next' | 'prev' = 'next'
-) => {
-  let query = db.collection('users').orderBy('createdAt', 'desc').limit(limit);
+export const getAllUsers = async ({
+  limit = 10,
+  startAfterValue,
+  endBeforeValue,
+}: {
+  limit?: number;
+  startAfterValue?: number;
+  endBeforeValue?: number;
+}) => {
+  let query = db.collection('users').orderBy('createdAt', 'desc');
 
-  if (cursor) {
-    if (direction === 'next') {
-      query = query.startAfter(cursor);
-    } else if (direction === 'prev') {
-      query = query.endBefore(cursor);
-    }
+  if (startAfterValue) {
+    query = query.startAfter(startAfterValue);
   }
 
+  if (endBeforeValue) {
+    query = query.endBefore(endBeforeValue);
+  }
+
+  query = query.limit(limit);
+
   const snapshot = await query.get();
-  const users = snapshot.docs.map(doc => ({
+
+  const users = snapshot.docs.map((doc) => ({
     id: doc.id,
-    ...doc.data()
+    ...doc.data(),
   }));
 
-  const totalSnap = await db.collection('users').count().get();
-  const total = totalSnap.data().count;
+  const firstVisible = snapshot.docs[0];
+  const lastVisible = snapshot.docs[snapshot.docs.length - 1];
 
-  const nextCursor = snapshot.docs[snapshot.docs.length - 1]?.get('createdAt');
-  const prevCursor = snapshot.docs[0]?.get('createdAt');
+  const nextCursor = lastVisible?.data().createdAt;
+  const prevCursor = firstVisible?.data().createdAt;
+
+  // Total count of all users
+  const totalSnapshot = await db.collection('users').get();
+  const total = totalSnapshot.size;
 
   return {
     users,
-    pageSize: users.length,
     total,
     nextCursor,
-    prevCursor
+    prevCursor,
   };
 };
+
 
 export const createUser = async (userData: CreateUserDTO) => {
   const now = Date.now();

@@ -6,9 +6,14 @@ export const handleFetchUser = async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const cursor = req.query.cursor ? Number(req.query.cursor) : undefined;
-    const direction = req.query.direction === 'prev' ? 'prev' : 'next';
+    const prevCursor = req.query.prevCursor ? Number(req.query.prevCursor) : undefined;
 
-    const result = await getAllUsers(limit, cursor, direction);
+    // Pass cursor or prevCursor to the getAllUsers function based on query parameters
+    const result = await getAllUsers({
+      limit,
+      startAfterValue: cursor,    // For next page (forward pagination)
+      endBeforeValue: prevCursor, // For previous page (backward pagination)
+    });
 
     res.status(200).json(result);
   } catch (error) {

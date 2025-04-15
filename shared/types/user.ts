@@ -17,3 +17,8 @@ export interface CreateUserDTO {
   numberOfReviews?: number;
   recentlyActive?: number;
 }
+
+export interface UserFilterParams {
+  page: number;
+  limit: number; // Limit per page 
+}
