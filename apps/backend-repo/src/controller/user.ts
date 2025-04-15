@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { db } from '@/config/firebaseConfig';
-import { getAllUsers } from '@/repository/userCollection';
+import { createUser, getAllUsers, updateUser } from '@/repository/userCollection';
 import { CreateUserDTO } from '@shared/types/user';
 
 export const handleFetchUser = async (req: Request, res: Response) => {
@@ -14,39 +14,33 @@ export const handleFetchUser = async (req: Request, res: Response) => {
 
 export const handleUpdateUser = async (req: Request, res: Response) => {
   const { id, name, email } = req.body;
-  
-  const now = Date.now();
-
-  if (id) {
-    const userRef = db.collection('users').doc(id);
-    const doc = await userRef.get();
-    if (doc.exists) {
-      await userRef.update({
-        name,
-        email,
-        updatedAt: now,
-      });
+  try {
+    const updatedUser = await updateUser(id, {
+      name,
+      email,
+    });
+    if (updatedUser) {
       res.status(200).json({ message: 'User updated' });
-    } else {
-      res.status(404).json({ message: 'User not found' });
+      return;
     }
-    return;
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(404).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'Internal server error' });
+    }
   }
-  res.status(400).json({ message: 'Please provide user id' });
 };
 
 export const handleCreateUser = async (req: Request, res: Response) => {
   const { name, email } = req.body as CreateUserDTO;
-  const now = Date.now();
   if (!name || !email) {
     res.status(400).json({ message: 'Please provide name and email' });
     return;
   }
-  const docRef = await db.collection('users').add({
+  const docRef = await createUser({
     name,
     email,
-    createdAt: now,
-    updatedAt: now,
   });
 
   res.status(201).json({ id: docRef.id, message: 'User created' });

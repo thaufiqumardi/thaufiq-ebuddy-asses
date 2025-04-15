@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { JwtPayload } from 'jsonwebtoken';
 
 // const SECRET_KEY = 'supersecret'; // use from .env file in production
 
