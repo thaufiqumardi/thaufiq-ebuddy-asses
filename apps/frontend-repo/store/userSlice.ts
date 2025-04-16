@@ -1,64 +1,58 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '@shared/types/user';
 
-interface PaginationState {
-  users: User[];
-  nextCursor: number | null;
-  prevCursor: number[]; // to support "go back"
-  total: number;
-  page: number;
-}
-
 interface UserState {
   users: User[];
   total: number;
   page: number;
   cursors: (string | null)[];
   nextCursor: string | null;
+  prevCursor: string | null;
+  pageSize: number;
 }
 
 const initialState: UserState = {
   users: [],
   total: 0,
   page: 1,
-  cursors: [null], // first page = null cursor
+  cursors: [null],
   nextCursor: null,
+  prevCursor: null,
+  pageSize: 10
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUsers(state, action: PayloadAction<User[]>) {
+    setUsers(state, action) {
       state.users = action.payload;
     },
-    setTotal(state, action: PayloadAction<number>) {
+    setNextCursor(state, action) {
+      state.nextCursor = action.payload;
+    },
+    setPrevCursor(state, action) {
+      state.prevCursor = action.payload;
+    },
+    setPage(state, action) {
+      state.page = action.payload;
+    },
+    addCursor(state, action) {
+      // Add the cursor for the current page
+      state.cursors[state.page - 1] = action.payload;
+    },
+    goToNextCursor(state) {
+      state.page += 1;
+    },
+    setTotal(state, action) {
       state.total = action.payload;
     },
-    setNextCursor(state, action: PayloadAction<string | null>) {
-      state.nextCursor = action.payload;
-      if (action.payload !== null) {
-        state.cursors.push(action.payload);
-        state.page += 1;
-      }
-    },
-    goToPreviousCursor(state) {
-      if (state.page > 1) {
-        state.page -= 1;
-        state.cursors.pop();
-        state.nextCursor = state.cursors[state.cursors.length - 1] ?? null;
-      }
-    },
-    setPage(state, action: PayloadAction<number>) {
-      state.page = action.payload;
-
-      // Optional: reset cursor stack if jumping pages manually
-      state.cursors = [null];
-      state.nextCursor = null;
+    setPageSize(state, action: PayloadAction<number>) {
+      state.pageSize = action.payload;
     },
   },
 });
 
-export const { setUsers, setTotal, setNextCursor, goToPreviousCursor, setPage } = userSlice.actions;
+export const { setUsers, setTotal, setNextCursor, setPrevCursor, addCursor, setPage, setPageSize } = userSlice.actions;
 
 export default userSlice.reducer;
