@@ -56,7 +56,7 @@ export default function UsersPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { users, nextCursor, page, total, cursors, pageSize } = useSelector((state: RootState) => state.user);
 
-  const handleFetchUsers = async (cursor?: number, limit?: number) => {
+  const handleFetchUsers = async (cursor?: number, limit: number =10) => {
     const data = await fetchUsersFromAPI({ cursor, limit});
     dispatch(setUsers(data.users));
     dispatch(setTotal(data.total));
@@ -82,6 +82,7 @@ export default function UsersPage() {
   };
   useEffect(() => {
     handleFetchUsers();
+    console.log("Fetching users...");
   }, []);
 
   return (
@@ -97,6 +98,7 @@ export default function UsersPage() {
         paginationMode="server"
         paginationModel={{ page: page - 1, pageSize }}
         onPaginationModelChange={handlePaginationChange}
+        sx={{ display: 'flex', flex: 1 }}
       />
     </div>
   );
