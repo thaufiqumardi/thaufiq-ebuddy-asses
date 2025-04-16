@@ -25,7 +25,6 @@
       "@component": ["./components/index.ts"], //just so i can import at the same path
       "@components/*": ["./components/*"],
       "@constants/*": ["./constants/*"],
-      "@contexts/*": ["./contexts/*"],
       "@types/*": ["./types/*"],
       "@shared/*": ["../../shared/*"],     
     }

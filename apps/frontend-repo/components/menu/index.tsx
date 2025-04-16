@@ -1,12 +1,12 @@
-"use client"
+'use client'
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import { List, Grid, ListItemButton } from '@mui/material';
 
 import { IMenuItem } from '@/types';
 
 import Link from 'next/link'
 import { ListItemIcon, ListItemText } from '@mui/material';
+import { usePathname } from 'next/navigation';
 
 
 type Props = IMenuItem & {
@@ -56,7 +56,7 @@ export const MenuItem: React.FC<Props> = ({
 };
 
 export const MenuItemsList = ({ items = [] }: { items?: IMenuItem[] }) => {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
 
   if (!items.length) return null;
 

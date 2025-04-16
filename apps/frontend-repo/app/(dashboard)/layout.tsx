@@ -1,37 +1,27 @@
-'use client';
 import { ReactNode } from "react";
-import { Toolbar, Box, styled } from "@mui/material";
-
-import { Header, Drawer} from "@component";
-import { DrawerContextProvider } from "@/contexts/drawer-context";
-
-const OuterContainer = styled(Box)`
-  display: flex;
-  overflow: hidden;
-  height: inherit;
-  flex-direction: column;
-  min-height: 100vh;
-`;
-
-const InnerContainer = styled(Box)`
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  height: inherit;
-`;
-
+import { Toolbar, Box } from "@mui/material";
+import { Header, Drawer } from "@/components";
 
 export default function DashboardLayout({ children }: { children: Readonly<ReactNode> }) {
   return (
-    <DrawerContextProvider>
-      <OuterContainer>
-        <Header />
-        <Toolbar />
-        <InnerContainer>
-          <Drawer />
-          {children}
-        </InnerContainer>
-      </OuterContainer>
-    </DrawerContextProvider>
+    <Box sx={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      height: 'inherit',  
+      minHeight: '100vh', 
+      overflow: 'hidden' 
+    }}>
+      <Header />
+      <Toolbar />
+      <Box sx={{ 
+        display: 'flex', 
+        overflow: 'hidden', 
+        height: 'inherit', 
+        flex: 1 
+      }}>
+        <Drawer />
+        {children}
+      </Box>
+    </Box>
   )
 };  

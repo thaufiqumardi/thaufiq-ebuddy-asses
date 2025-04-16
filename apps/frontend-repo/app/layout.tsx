@@ -1,7 +1,5 @@
-'use client'
 import "./globals.css";
 import { Providers } from "./providers";
-import { BrowserRouter } from "react-router-dom";
 
 export default function RootLayout({
   children,
@@ -11,11 +9,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <BrowserRouter>
-          <Providers>
-            {children}
-          </Providers>
-        </BrowserRouter>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

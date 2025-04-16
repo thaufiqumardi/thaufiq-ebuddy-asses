@@ -1,9 +1,8 @@
 'use client';
-
 import React, { useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '@/store/index';
+import { AppDispatch, RootState } from '@/store/';
 import {
   setUsers,
   setNextCursor,
