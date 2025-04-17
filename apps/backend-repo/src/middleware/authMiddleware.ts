@@ -1,41 +1,30 @@
 import { Request, Response, NextFunction } from 'express';
+import { adminAuth } from '../config/firebaseConfig';
 
-// const SECRET_KEY = 'supersecret'; // use from .env file in production
-
-// declare global {
-//   namespace Express {
-//     interface Request {
-//       user?: string | JwtPayload;
-//     }
-//   }
-// }
-
-export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ error: 'Unauthorized' });
-  }
-
-  const token = authHeader?.split(" ")[1]; // To split the token from the "Bearer" prefix
-  if (!token) {
-    res.status(401).json({ error: 'Unauthorized' });
-    return
-  }
-  try {
-    // Ideally we should decode the token and set req.user (i can do this after `declare global` to extend Express Request)
-    // to the decoded value
-    // This is just a placeholder, need to replace with actual decoding logic
-    
-    // const decoded = jwt.verify(token as string, SECRET_KEY);
-    // req.user = decoded;
-    if (token === 'my-secret-token') {
-      next(); // Proceed to the next middleware or route handler
-    } else {
-      throw new Error('Invalid token');
+declare global {
+  namespace Express {
+    interface Request {
+      user?: any; // Extend the Request object to include a `user` property
     }
-   
-  } catch {
-    res.status(403).json({ error: 'Invalid token' });
+  }
+}
+
+export const authenticate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    res.status(401).json({ error: "Unauthorized: Missing or invalid Authorization header" });
+    return;
+  }
+
+  const token = authHeader.split(" ")[1]; // Extract the token from the "Bearer" prefix
+
+  try {
+    const decodedToken = await adminAuth.verifyIdToken(token);
+    req.user = decodedToken;
+    next();
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    res.status(403).json({ error: "Invalid or expired token" });
   }
 };
-

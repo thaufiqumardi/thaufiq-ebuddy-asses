@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { handleCreateUser, handleFetchUser, handleUpdateUser } from '../controller/user';
 import { authenticate } from '../middleware/authMiddleware';
+import { handleAuthLogin } from '../controller/auth';
 
 const router = Router();
 
@@ -12,6 +13,8 @@ router.get('/fetch-user-data', authenticate, handleFetchUser);
 
 router.post('/update-user-data', authenticate, handleCreateUser);
 router.put('/update-user-data', authenticate, handleUpdateUser);
+
+router.post('/login', handleAuthLogin);
 
 
 export default router;

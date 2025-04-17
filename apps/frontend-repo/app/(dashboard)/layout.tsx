@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }: { children: Readonly<React
       flexDirection: 'column', 
       height: 'inherit',  
       minHeight: '100vh', 
-      overflow: 'hidden' 
+      overflow: 'auto' 
     }}>
       <Header />
       <Toolbar />
@@ -17,7 +17,7 @@ export default function DashboardLayout({ children }: { children: Readonly<React
         display: 'flex', 
         overflow: 'hidden', 
         height: 'inherit', 
-        flex: 1 
+        flex: 1,
       }}>
         <Drawer />
         {children}

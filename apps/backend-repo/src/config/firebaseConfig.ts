@@ -1,5 +1,7 @@
-import { initializeApp, getApps } from 'firebase-admin/app';
+import { initializeApp, getApps,  } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
+
 
 if (!getApps().length) {
   initializeApp();
@@ -12,4 +14,6 @@ db.settings({
   ssl: false,
 });
 
-export { db };
+const adminAuth = getAuth();
+
+export { db, adminAuth };

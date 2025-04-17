@@ -86,20 +86,17 @@ export default function UsersPage() {
   }, []);
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl mb-2 text-fuchsia-950">Users Page {page}</h1>
-      <DataGrid
-        disableRowSelectionOnClick
-        disableColumnSelector
-        rows={users}
-        columns={columns}
-        pageSizeOptions={[10, 20, 50]}
-        rowCount={total}
-        paginationMode="server"
-        paginationModel={{ page: page - 1, pageSize }}
-        onPaginationModelChange={handlePaginationChange}
-        sx={{ display: 'flex', flex: 1 }}
-      />
-    </div>
+    <DataGrid
+      disableRowSelectionOnClick
+      disableColumnSelector
+      rows={users}
+      columns={columns}
+      pageSizeOptions={[10, 20, 50]}
+      rowCount={total}
+      paginationMode="server"
+      paginationModel={{ page: page - 1, pageSize }}
+      onPaginationModelChange={handlePaginationChange}
+      sx={{ display: 'flex', flex: 1 }}
+    />
   );
 }
