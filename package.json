@@ -2,9 +2,9 @@
   "name": "ebuddy-assessment",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "dev": "turbo run dev"
+    "dev": "turbo run dev --filter=backend-repo --filter=frontend-repo --parallel",
+    "build": "turbo run build --filter=backend-repo --filter=frontend-repo --parallel"
   },
   "keywords": [],
   "author": "",
@@ -12,10 +12,15 @@
   "type": "commonjs",
   "packageManager": "npm@11.1.0",
   "workspaces": [
-    "apps/*"
+    "apps/backend-repo",
+    "apps/frontend-repo"
   ],
   "dependencies": {
     "firebase-admin": "^13.2.0",
     "turbo": "^2.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2"
   }
 }
