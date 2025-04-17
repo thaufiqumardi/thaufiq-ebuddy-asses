@@ -2,7 +2,7 @@
   "name": "backend-repo",
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
-    "build": "tsc",
+    "build": "tsc && firebase emulators:start --only functions,auth,firestore",
     "build:watch": "tsc --watch",
     "dev": "npm run build && firebase emulators:start --only functions,auth,firestore",
     "shell": "npm run build && firebase functions:shell",

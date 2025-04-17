@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "turbo run dev --filter=backend-repo --filter=frontend-repo --parallel"
+    "dev": "turbo run dev --filter=backend-repo --filter=frontend-repo --parallel",
+    "build": "turbo run build --filter=backend-repo --filter=frontend-repo --parallel"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +16,6 @@
     "apps/frontend-repo"
   ],
   "dependencies": {
-    "@mui/x-data-grid": "^7.28.3",
     "firebase-admin": "^13.2.0",
     "turbo": "^2.5.0"
   },
