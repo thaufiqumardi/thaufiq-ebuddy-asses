@@ -5,7 +5,7 @@ export const handleAuthLogin = async (req: any, res: any) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ error: "Email and password are required" });
+    return res.status(400).json({ message: "Email and password are required" });
   }
 
   try {
@@ -15,7 +15,6 @@ export const handleAuthLogin = async (req: any, res: any) => {
 
     return res.status(200).json({ token });
   } catch (error) {
-    console.error("Error logging in:", error);
-    return res.status(401).json({ error: "Invalid email or password" });
+    return res.status(401).json({ message: "Invalid email or password" });
   }
 }

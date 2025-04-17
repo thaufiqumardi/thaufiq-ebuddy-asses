@@ -13,7 +13,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ error: "Unauthorized: Missing or invalid Authorization header" });
+    res.status(401).json({ message: "Unauthorized: Missing or invalid Authorization header" });
     return;
   }
 
@@ -25,6 +25,6 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     next();
   } catch (error) {
     console.error("Error verifying token:", error);
-    res.status(403).json({ error: "Invalid or expired token" });
+    res.status(403).json({ message: "Invalid or expired token" });
   }
 };

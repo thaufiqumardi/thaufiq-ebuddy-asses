@@ -10,9 +10,12 @@ import {
   setPrevCursor,
   setPage,
   addCursor,
-  setPageSize
+  setPageSize,
+  setError,
+  clearError,
 } from '@/store/userSlice';
 import { fetchUsers as fetchUsersFromAPI } from '@/api/user';
+import { Box, Typography } from '@mui/material';
 
 const columns: GridColDef[] = [
   { 
@@ -54,15 +57,21 @@ const columns: GridColDef[] = [
 
 export default function UsersPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const { users, nextCursor, page, total, cursors, pageSize } = useSelector((state: RootState) => state.user);
+  const { users, nextCursor, page, total, cursors, pageSize, error } = useSelector((state: RootState) => state.user);
 
   const handleFetchUsers = async (cursor?: number, limit: number =10) => {
-    const data = await fetchUsersFromAPI({ cursor, limit});
-    dispatch(setUsers(data.users));
-    dispatch(setTotal(data.total));
-    dispatch(setNextCursor(data.nextCursor));
-    dispatch(setPrevCursor(data.prevCursor));
-    dispatch(addCursor(cursor || null)); 
+    try {
+      const data = await fetchUsersFromAPI({ cursor, limit});
+      dispatch(setUsers(data.users));
+      dispatch(setTotal(data.total));
+      dispatch(setNextCursor(data.nextCursor));
+      dispatch(setPrevCursor(data.prevCursor));
+      dispatch(addCursor(cursor || null));
+      dispatch(clearError());
+    } catch (error) {
+      console.log('Error fetching users:', error);
+      dispatch(setError((error as { message?: string })?.message || 'An unknown error occurred')); // Set error in the store
+    }
   };
 
   const handlePaginationChange = (model: { page: number; pageSize: number }) => {
@@ -86,17 +95,27 @@ export default function UsersPage() {
   }, []);
 
   return (
-    <DataGrid
-      disableRowSelectionOnClick
-      disableColumnSelector
-      rows={users}
-      columns={columns}
-      pageSizeOptions={[10, 20, 50]}
-      rowCount={total}
-      paginationMode="server"
-      paginationModel={{ page: page - 1, pageSize }}
-      onPaginationModelChange={handlePaginationChange}
-      sx={{ display: 'flex', flex: 1 }}
-    />
+    <Box sx={{display: 'flex', flex: 1, flexDirection: 'column' }}>
+      <Typography variant="h5" color="primary" sx={{ marginBottom: 2 }}>
+        Users
+      </Typography>
+      { error && (
+        <Typography variant="body1" color="error" sx={{ marginBottom: 2 }}>
+          Error fetching user: {error}
+        </Typography>
+      )}
+      <DataGrid
+        disableRowSelectionOnClick
+        disableColumnSelector
+        rows={users}
+        columns={columns}
+        pageSizeOptions={[10, 20, 50]}
+        rowCount={total}
+        paginationMode="server"
+        paginationModel={{ page: page - 1, pageSize }}
+        onPaginationModelChange={handlePaginationChange}
+        sx={{ display: 'flex', flex: 1 }}
+      />
+    </Box>
   );
 }

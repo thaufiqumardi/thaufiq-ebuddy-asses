@@ -2,7 +2,7 @@ import { initializeApp, getApps } from 'firebase/app';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'ADzaSyBJoRJWk4RyIlyrdcSbvwHoa37-R-Gg8t0',
+  apiKey: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-X-XXXXX',
   authDomain: 'localhost',
   projectId: 'e-buddy-assessment',
 };

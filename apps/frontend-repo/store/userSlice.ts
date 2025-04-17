@@ -9,6 +9,7 @@ interface UserState {
   nextCursor: string | null;
   prevCursor: string | null;
   pageSize: number;
+  error: string | null;
 }
 
 const initialState: UserState = {
@@ -18,7 +19,8 @@ const initialState: UserState = {
   cursors: [null],
   nextCursor: null,
   prevCursor: null,
-  pageSize: 10
+  pageSize: 10,
+  error: null,
 };
 
 const userSlice = createSlice({
@@ -50,9 +52,15 @@ const userSlice = createSlice({
     setPageSize(state, action: PayloadAction<number>) {
       state.pageSize = action.payload;
     },
+    setError(state, action: PayloadAction<string | null>) {
+      state.error = action.payload;
+    },
+    clearError(state) {
+      state.error = null;
+    },
   },
 });
 
-export const { setUsers, setTotal, setNextCursor, setPrevCursor, addCursor, setPage, setPageSize } = userSlice.actions;
+export const { setUsers, setTotal, setNextCursor, setPrevCursor, addCursor, setPage, setPageSize, setError, clearError } = userSlice.actions;
 
 export default userSlice.reducer;

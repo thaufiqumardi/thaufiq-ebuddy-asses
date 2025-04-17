@@ -17,7 +17,6 @@ export const handleFetchUser = async (req: Request, res: Response) => {
 
     res.status(200).json(result);
   } catch (error) {
-    console.error('Fetch users failed:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
