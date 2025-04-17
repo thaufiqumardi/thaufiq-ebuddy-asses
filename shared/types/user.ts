@@ -22,3 +22,8 @@ export interface UserFilterParams {
   page: number;
   limit: number; // Limit per page 
 }
+
+export interface UserAuth {
+  email: string;
+  password: string;
+}

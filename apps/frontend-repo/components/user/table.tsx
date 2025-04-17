@@ -69,7 +69,6 @@ export default function UsersPage() {
       dispatch(addCursor(cursor || null));
       dispatch(clearError());
     } catch (error) {
-      console.log('Error fetching users:', error);
       dispatch(setError((error as { message?: string })?.message || 'An unknown error occurred')); // Set error in the store
     }
   };

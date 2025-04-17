@@ -1,9 +1,25 @@
-export default function LoginPage() {
+import LoginForm from "@/components/login/login-form";
+import { Box } from "@mui/material";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+export default async function LoginPage() {
+    const cookiesStore = await cookies();
+    const token =  cookiesStore.get('token')?.value;
+    if (token) {
+      redirect('/');
+    }
+    
   return (
-    <div>
-      <h1>Login Page</h1>
-      <p>Please log in to access the application.</p>
-      {/* Add your login form or authentication logic here */}
-    </div>
+    <Box sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      backgroundColor: "#f5f5f5",
+      padding: 2,
+    }}>
+      <LoginForm />
+    </Box>
   );
 }

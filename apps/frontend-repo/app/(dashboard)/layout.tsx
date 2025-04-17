@@ -1,8 +1,17 @@
 import { ReactNode } from "react";
 import { Toolbar, Box } from "@mui/material";
 import { Header, Drawer } from "@/components";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function DashboardLayout({ children }: { children: Readonly<ReactNode> }) {
+export default async function  DashboardLayout({ children }: { children: Readonly<ReactNode> }) {
+  const cookiesStore = await cookies();
+  const token =  cookiesStore.get('token')?.value;
+
+  if (!token) {
+    redirect('/login');
+  }
+  
   return (
     <Box sx={{ 
       display: 'flex', 
