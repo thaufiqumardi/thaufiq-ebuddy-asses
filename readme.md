@@ -10,8 +10,8 @@ As in the example document Technical Test, but only I wrap it in /src/ directory
 - Firebase installed in your environment
 
 ## How to run this project
-`npm run build`
-The firebase emulators will start with the front end, just point your browser to `http://localhost:3000`
+- `npm run build`
+The firebase emulators will start with the front end, just point your browser to <link>http://localhost:3000</link>
 
 ## Notes
-I dont create Signup Page, so tester need to go to Firebase UI and add user manually at the Authentication feature and login.
+I dont create Signup Page, so tester need to go to Firebase UI at <link>http://localhost:4001</link> and add user manually at the Authentication feature and login.
