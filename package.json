@@ -11,7 +11,8 @@
   "type": "commonjs",
   "packageManager": "npm@11.1.0",
   "workspaces": [
-    "apps/*"
+    "apps/backend-repo",
+    "apps/frontend-repo"
   ],
   "dependencies": {
     "@mui/x-data-grid": "^7.28.3",

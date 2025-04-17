@@ -1,5 +1,5 @@
-import { db } from '@/config/firebaseConfig';
-import { CreateUserDTO } from '@shared/types/user';
+import { db } from '../config/firebaseConfig';
+import { CreateUserDTO } from '../../../../shared/types/user';
 
 export const getAllUsers = async ({
   limit = 10,
@@ -68,11 +68,10 @@ export const updateUser = async (userId: string, userData: CreateUserDTO) => {
   if (!doc.exists) {
     throw new Error('User not found');
   }
-  if (doc.exists) {
-    await userRef.update({
-      ...userData,
-      updatedAt: now,
-    });
-    return { id: userId, ...userData };
-  }
+
+  await userRef.update({
+    ...userData,
+    updatedAt: now,
+  });
+  return { id: userId, ...userData };
 }

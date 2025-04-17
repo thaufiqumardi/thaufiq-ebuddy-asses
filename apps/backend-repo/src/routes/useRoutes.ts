@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { handleCreateUser, handleFetchUser, handleUpdateUser } from '@/controller/user';
-import { authenticate } from '@/middleware/authMiddleware';
+import { handleCreateUser, handleFetchUser, handleUpdateUser } from '../controller/user';
+import { authenticate } from '../middleware/authMiddleware';
 
 const router = Router();
 

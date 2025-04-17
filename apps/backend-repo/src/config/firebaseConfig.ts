@@ -1,13 +1,15 @@
-import { initializeApp, cert, getApps } from 'firebase-admin/app';
+import { initializeApp, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-import serviceAccount from '@app/firebase-service-account.json';
 
 if (!getApps().length) {
-  initializeApp({
-    credential: cert(serviceAccount as any),
-  });
+  initializeApp();
 }
 
 const db = getFirestore();
+
+db.settings({
+  host: 'http://localhost:8080',
+  ssl: false,
+});
 
 export { db };

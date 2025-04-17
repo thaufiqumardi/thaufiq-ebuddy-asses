@@ -1,20 +1,17 @@
 {
-  "extends": "../../tsconfig.base.json",                /* Extend the base TypeScript configuration. */
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "esModuleInterop": true,                            /* Enables emit interoperability between CommonJS and ES Modules. */
-    "incremental": true,
-    "baseUrl": ".",                                     /* Base directory to resolve non-relative module names. */
-    "paths": {
-      "@/*": ["./src/*"],                               /* Path mapping for app module. */
-      "@app/*": ["./*"],                                /* Path mapping for app module. */
-      "@shared/*": ["../../shared/*"],                  /* Path mapping for shared module. */
-    }
+    "module": "NodeNext",
+    "esModuleInterop": true,
+    "moduleResolution": "nodenext",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017"
   },
+  "compileOnSave": true,
   "include": [
-    "./src",                                       /* Include the src directory. */
-    "./src/**/*.ts",                               /* Include all TypeScript files in the src directory. */
-    "./**/*.ts",                                   /* Include all TypeScript files in the src directory. */
-    "./**/*.json"                                  /* Include all JSON files in the src directory. */
-  ],
+    "src"
+  ]
 }

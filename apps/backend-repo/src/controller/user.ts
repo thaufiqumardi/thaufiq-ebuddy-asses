@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { createUser, getAllUsers, updateUser } from '@/repository/userCollection';
-import { CreateUserDTO } from '@shared/types/user';
+import { createUser, getAllUsers, updateUser } from '../repository/userCollection';
+import { CreateUserDTO } from '../../../../shared/types/user';
 
 export const handleFetchUser = async (req: Request, res: Response) => {
   try {
